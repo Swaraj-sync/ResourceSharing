@@ -7,22 +7,15 @@ from config import Config
 from models import db, User, Resource, Request, Allocation
 from algorithms import allocate_resources
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 db.init_app(app)
-
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
-
-app = Flask(__name__)
-app.config.from_object(Config)
-db.init_app(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
 
 # Create tables within app context
 with app.app_context():
