@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}Allocations{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h2>Resource Allocations</h2>
+  {% if current_user.is_authenticated %}
+  <a href="{{ url_for('run_allocation') }}" class="button">Run Allocation Algorithm</a>
+  {% endif %}
+</div>
+
+<h3>Resources Allocated to Your Requests</h3>
+{% if requested_allocations %}
+<table>
+  <thead>
+  <tr>
+    <th>Resource</th>
+    <th>From</th>
+    <th>To</th>
+    <th>Status</th>
+    <th>Owner</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for allocation in requested_allocations %}
+  <tr>
+    <td>{{ allocation.resource.name }}</td>
+    <td>{{ allocation.allocated_from.strftime('%m/%d/%Y %H:%M') }}</td>
+    <td>{{ allocation.allocated_to.strftime('%m/%d/%Y %H:%M') }}</td>
+    <td>{{ allocation.status }}</td>
+    <td>{{ allocation.resource.owner.username }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>You have no resources allocated to your requests yet.</p>
+{% endif %}
+
+<h3>Your Resources Allocated to Others</h3>
+{% if owned_allocations %}
+<table>
+  <thead>
+  <tr>
+    <th>Resource</th>
+    <th>Requester</th>
+    <th>From</th>
+    <th>To</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for allocation in owned_allocations %}
+  <tr>
+    <td>{{ allocation.resource.name }}</td>
+    <td>{{ allocation.request.requester.username }}</td>
+    <td>{{ allocation.allocated_from.strftime('%m/%d/%Y %H:%M') }}</td>
+    <td>{{ allocation.allocated_to.strftime('%m/%d/%Y %H:%M') }}</td>
+    <td>{{ allocation.status }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>None of your resources have been allocated yet.</p>
+{% endif %}
+{% endblock %}

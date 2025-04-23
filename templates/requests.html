@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}My Requests{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h2>My Resource Requests</h2>
+  <a href="{{ url_for('add_request') }}" class="button">New Request</a>
+</div>
+
+{% if requests %}
+<table>
+  <thead>
+  <tr>
+    <th>Resource Type</th>
+    <th>Needed From</th>
+    <th>Needed To</th>
+    <th>Priority</th>
+    <th>Status</th>
+    <th>Created</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for request in requests %}
+  <tr>
+    <td>{{ request.resource_type }}</td>
+    <td>{{ request.needed_from.strftime('%m/%d/%Y %H:%M') }}</td>
+    <td>{{ request.needed_to.strftime('%m/%d/%Y %H:%M') }}</td>
+    <td>{{ request.priority }}/10</td>
+    <td>{{ request.status }}</td>
+    <td>{{ request.created_at.strftime('%m/%d/%Y') }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>You have no resource requests yet.</p>
+{% endif %}
+{% endblock %}

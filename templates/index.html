@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="hero">
+  <h2>Share Resources, Build Community</h2>
+  <p>ResourceShare optimally matches community resources with those who need them.</p>
+
+  {% if not current_user.is_authenticated %}
+  <div class="cta-buttons">
+    <a href="{{ url_for('register') }}" class="button">Sign Up</a>
+    <a href="{{ url_for('login') }}" class="button button-outline">Login</a>
+  </div>
+  {% else %}
+  <div class="cta-buttons">
+    <a href="{{ url_for('add_resource') }}" class="button">Share a Resource</a>
+    <a href="{{ url_for('add_request') }}" class="button button-outline">Request a Resource</a>
+  </div>
+  {% endif %}
+</section>
+
+<section class="recent-resources">
+  <h3>Recently Added Resources</h3>
+  {% if resources %}
+  <div class="resource-grid">
+    {% for resource in resources %}
+    <div class="resource-card">
+      <h4>{{ resource.name }}</h4>
+      <p class="category">{{ resource.category }}</p>
+      <p class="description">{{ resource.description }}</p>
+      <p class="dates">Available: {{ resource.available_from.strftime('%m/%d/%Y') }} - {{ resource.available_to.strftime('%m/%d/%Y') }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>No resources available yet. Be the first to share!</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}Resources{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Available Resources</h2>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('add_resource') }}" class="button">Add Resource</a>
+    {% endif %}
+</div>
+
+<div class="filters">
+    <form method="get" action="{{ url_for('resources') }}" class="filter-form">
+        <select name="category">
+            <option value="">All Categories</option>
+            <option value="tools">Tools</option>
+            <option value="equipment">Equipment</option>
+            <option value="space">Space</option>
+            <option value="vehicle">Vehicle</option>
+            <option value="other">Other</option>
+        </select>
+        <button type="submit" class="button">Filter</button>
+    </form>
+</div>
+
+{% if resources %}
+<div class="resource-grid">
+    {% for resource in resources %}
+    <div class="resource-card">
+        <h4>{{ resource.name }}</h4>
+        <p class="category">{{ resource.category }}</p>
+        <p class="description">{{ resource.description }}</p>
+        <p class="dates">Available: {{ resource.available_from.strftime('%m/%d/%Y') }} - {{ resource.available_to.strftime('%m/%d/%Y') }}</p>
+        <p>Owner: {{ resource.owner.username }}</p>
+
+        {% if current_user.is_authenticated and current_user.id != resource.owner_id %}
+        <a href="{{ url_for('add_request') }}?type={{ resource.category }}" class="button button-outline">Request Similar</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No resources found.</p>
+{% endif %}
+{% endblock %}

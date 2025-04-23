@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}Request Resource{% endblock %}
+
+{% block content %}
+<h2>Request a Resource</h2>
+<form method="post">
+  <div class="form-group">
+    <label for="resource_type">Resource Type</label>
+    <select id="resource_type" name="resource_type" required>
+      <option value="">Select Type</option>
+      <option value="tools" {% if request.args.get('type') == 'tools' %}selected{% endif %}>Tools</option>
+      <option value="equipment" {% if request.args.get('type') == 'equipment' %}selected{% endif %}>Equipment</option>
+      <option value="space" {% if request.args.get('type') == 'space' %}selected{% endif %}>Space</option>
+      <option value="vehicle" {% if request.args.get('type') == 'vehicle' %}selected{% endif %}>Vehicle</option>
+      <option value="other" {% if request.args.get('type') == 'other' %}selected{% endif %}>Other</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="needed_from">Needed From</label>
+    <input type="datetime-local" id="needed_from" name="needed_from" required>
+  </div>
+
+  <div class="form-group">
+    <label for="needed_to">Needed To</label>
+    <input type="datetime-local" id="needed_to" name="needed_to" required>
+  </div>
+
+  <div class="form-group">
+    <label for="priority">Priority (1-10)</label>
+    <input type="number" id="priority" name="priority" min="1" max="10" value="5" required>
+    <small>Higher number means higher priority</small>
+  </div>
+
+  <div class="form-group">
+    <input type="submit" value="Submit Request">
+  </div>
+</form>
+{% endblock %}
