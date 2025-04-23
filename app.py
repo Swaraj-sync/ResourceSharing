@@ -1,10 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from werkzeug.utils import url_parse
 from datetime import datetime
 from urllib.parse import urlparse
-if not next_page or urlparse(next_page).netloc != '':
-    next_page = url_for('index')
 
 from config import Config
 from models import db, User, Resource, Request, Allocation
@@ -77,7 +74,7 @@ def login():
 
         login_user(user, remember=request.form.get('remember_me'))
         next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
+        if not next_page or urlparse(next_page).netloc != '':
             next_page = url_for('index')
 
         return redirect(next_page)
