@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from werkzeug.urls import url_parse
+from werkzeug.utils import url_parse
 from datetime import datetime
+from urllib.parse import urlparse
+if not next_page or urlparse(next_page).netloc != '':
+    next_page = url_for('index')
 
 from config import Config
 from models import db, User, Resource, Request, Allocation
